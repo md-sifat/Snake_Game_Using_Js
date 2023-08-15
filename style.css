@@ -24,9 +24,17 @@ body{
 }
 
 .game_board{
+    position: relative;
     width: 100%;
-    height: 100vh;
+    height: 91%;
     display: grid;
     grid-template: repeat(40 , 1fr) / repeat(40 , 1fr);
-    
+
+}
+
+.game_board .food{
+    background-color: red;
+}
+.game_board .snake{
+    background-color: rgb(41, 162, 122);
 }
