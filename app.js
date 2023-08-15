@@ -3,9 +3,16 @@ const board = document.querySelector(".game_board");
 let foodY = 10 , foodX=13;
 let snakeY=10 , snakeX=10;
 let vX=0 , vY=0;
+let gameOver=false;
+let score = 0;
+let setIntervalId;
 let snakeBody = [];
 
-
+const gameOver_Ops = () =>{
+    clearInterval(setIntervalId);
+    alert(`Game Over. Score ${score} . Press Ok to Play again`);
+    location.reload();
+}
 
 const changeFood = () =>{
     foodX = Math.floor(Math.random() * 40 +1);
@@ -13,26 +20,33 @@ const changeFood = () =>{
 }
 const moveSnake = e =>{
     console.log(e);
-    if(e.key === "ArrowUp"){
+    if(e.key === "ArrowUp" && vY!=1){
         vX = 0;
         vY = -1;
-    }else if(e.key === "ArrowDown"){
+    }else if(e.key === "ArrowDown" && vY!=-1){
         vX = 0;
         vY = 1;
-    }else if(e.key === "ArrowLeft"){
+    }else if(e.key === "ArrowLeft" && vX!=1){
         vX = -1;
         vY = 0;
-    }else if(e.key === "ArrowRight"){
+    }else if(e.key === "ArrowRight" && vX!=-1){
         vX = 1;
         vY = 0;
     }
     initGame();
 }
 const initGame = () =>{
+    if(gameOver){
+        return gameOver_Ops();
+    }
     let markUp = `<div class="food" style = "grid-area : ${foodY} / ${foodX}"></div>`;
     snakeX+=vX;
     snakeY+=vY;
+    if(snakeX>40 || snakeY>40 || snakeX<0 && snakeY<0){
+        gameOver=true;
+    }
     if(snakeX === foodX && snakeY==foodY){
+        score++;
         changeFood();
         snakeBody.push([snakeX , snakeY]);
         console.log(snakeBody);
@@ -53,5 +67,5 @@ const initGame = () =>{
 
 
 changeFood();
-setInterval(initGame, 125); 
+setIntervalId =  setInterval(initGame, 125); 
 document.addEventListener('keydown' , moveSnake);
